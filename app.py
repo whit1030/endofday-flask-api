@@ -3,10 +3,10 @@ from email import message
 from xml.etree.ElementTree import tostring
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api, reqparse
-from parsers import parser,safe_parser,waste_parser,report_parser
+from parsers import parser,safe_parser,waste_parser
 from calculations import CashboxWizard, depositCashboxWizard
 from databaseCreate import conn, c
-from databaseFunctions import UpdateCashbox
+from databaseFunctions import UpdateCashbox, UpdateReport, UpdateTipsDeposit, getAllCashboxes
 
 from classes import Cashbox
 
@@ -67,20 +67,21 @@ class Wastesheet(Resource):
 
 class Cashboxcall(Resource):
     #get all cashboxes
-    #def get(self):
+    def get(self):
+        return getAllCashboxes()
 
     def post(self):
         args = parser.parse_args()
-        report_args = report_parser.parse_args()
-        dailyCashbox = Cashbox(args['hundred'],args['fifty'],args['twenty'],args['ten'],args['five'],args['two'],args['one'],args['quarter'],args['dime'],args['nickel']) 
-        tipsCashbox = CashboxWizard(dailyCashbox, report_args['TipAmount'])
-        depositCashbox = depositCashboxWizard(dailyCashbox)
-        tipsCashbox = UpdateCashbox(tipsCashbox)
-        #function to put deposit in database
-        #function to put tips in database
-        #function to put report in database
         
-        return args['hundred']
+        dailyCashbox = Cashbox(args['hundred'],args['fifty'],args['twenty'],args['ten'],args['five'],args['two'],args['one'],args['quarter'],args['dime'],args['nickel']) 
+        tipsCashbox = CashboxWizard(dailyCashbox, args['TipAmount'])
+        depositCashbox = depositCashboxWizard(dailyCashbox)
+        tipsCashboxId = UpdateCashbox(tipsCashbox)
+        depositCashboxId = UpdateCashbox(depositCashbox)
+        tipsDeposit = UpdateTipsDeposit(tipsCashboxId, depositCashboxId)
+        reportId = UpdateReport(args['NetSales'], args['ExpectedDeposit'], args['TipAmount'], args['QuantityOrders'], depositCashbox.getTotal(), depositCashboxId, tipsCashboxId )
+        
+        return reportId
 
 api.add_resource(Cashboxcall, '/cash/')
 

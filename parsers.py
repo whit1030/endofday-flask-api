@@ -43,12 +43,12 @@ waste_parser.add_argument('VeggieWrap', type=int, help="Quantity of VeggieWrap")
 
 #Report Parser
 
-report_parser = parser.copy()
 
-report_parser.add_argument('NetSales', type=float, help="NetSales for the day")
-report_parser.add_argument('QuantityOrders', type=float, help="Quantity of Orders for the day")
-report_parser.add_argument('TipAmount', type=float, help="Tips made for the day")
-report_parser.add_argument('ExpectedDeposit', type=float, help="Expected deposit for the day")
+
+parser.add_argument('NetSales', type=float, help="NetSales for the day")
+parser.add_argument('QuantityOrders', type=float, help="Quantity of Orders for the day")
+parser.add_argument('TipAmount', type=float, help="Tips made for the day")
+parser.add_argument('ExpectedDeposit', type=float, help="Expected deposit for the day")
 
 #Safe Parsers
 

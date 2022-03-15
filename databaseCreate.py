@@ -1,7 +1,7 @@
 #Using SQLite3
 import sqlite3
 
-conn = sqlite3.connect('endofday.db')
+conn = sqlite3.connect('endofday.db',check_same_thread=False)
 
 c= conn.cursor()
 
@@ -20,8 +20,9 @@ c= conn.cursor()
 #   `date` date 
 # )''')
 
-
-
+# c.execute('CREATE TABLE `deposits` (`ID` int(16) NOT NULL,`cashbox_ID` int(11) NOT NULL')
+# c.execute('CREATE TABLE `tips` (`ID` int(16) NOT NULL,`cashbox_ID` int(11) NOT NULL')
+# c.execute('CREATE TABLE `report` (`ID` int(16) NOT NULL,`Netsales` int(16) NOT NULL,`Expected_Deposit` float(16) NOT NULL,`Tip_Amount` float(16) NOT NULL,`Quantity_Of_Orders` int(16) NOT NULL,`Deposit` float(16) NOT NULL,`deposit_cashbox` float(11) NOT NULL,`tips_cashbox` float(11) NOT NULL)')
 
 # conn.commit()
 
