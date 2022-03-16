@@ -17,6 +17,12 @@ parser.add_argument('quarter', type=float, help="quarter total value in dollars"
 parser.add_argument('dime', type=float, help="dime total value in dollars")
 parser.add_argument('nickel', type=float, help="nickel total value in dollars")
 
+#Deposit ID parser
+parser.add_argument('depositId', type=int, help="Id for deposit cashbox")
+#Tips Parser
+parser.add_argument('tipsId', type=int, help="Id for tips cashbox")
+#Waste Id Parser
+parser.add_argument('wastesheetId', type=int, help="Id for wastesheet cashbox")
 #Waste Parsers
 waste_parser = parser.copy()
 
@@ -49,6 +55,7 @@ parser.add_argument('NetSales', type=float, help="NetSales for the day")
 parser.add_argument('QuantityOrders', type=float, help="Quantity of Orders for the day")
 parser.add_argument('TipAmount', type=float, help="Tips made for the day")
 parser.add_argument('ExpectedDeposit', type=float, help="Expected deposit for the day")
+parser.add_argument('reportId', type=int, help="int value for report ID")
 
 #Safe Parsers
 

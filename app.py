@@ -6,7 +6,7 @@ from flask_restful import Resource, Api, reqparse
 from parsers import parser,safe_parser,waste_parser
 from calculations import CashboxWizard, depositCashboxWizard
 from databaseCreate import conn, c
-from databaseFunctions import UpdateCashbox, UpdateReport, UpdateTipsDeposit, getAllCashboxes
+from databaseFunctions import UpdateCashbox, UpdateReport, UpdateTipsDeposit, getAllCashboxes, getAllDeposits, getAllReports, getAllTips, getAllWastesheets, getDepositById, getReportById, getTipsById, getWastesheetById, updateWastesheet
 
 from classes import Cashbox
 
@@ -19,57 +19,60 @@ api = Api(app)
 
 
 
-#class WastesheetList(Resource):
+class WastesheetList(Resource):
     #get all wastesheets
- #   def get(self):
-    #Add waste sheet to waste sheet database
+    def get(self):
+        return getAllWastesheets()
     
 class Wastesheet(Resource):
-    #def get(self, waste_id)
-    #stop if not in database
-    #return wastesheet[id]
+    def get(self):
+        args = waste_parser.parse_args()
+        return getWastesheetById(args['wastesheetId'])
+
     def post(self):
         args = waste_parser.parse_args()
-        return args
+        return updateWastesheet(args['AppleCranberryMuffin'],args['TripleBerryMuffin'],args['RaspberryScone'],args['Croissant'],args['HamCroissant'],args['QuinoaLoaf'],args['CherryLemonLoaf'],args['GingerCookie'],args['ChocolateChipCookie'],args['GranolaCookie'],args['CocoaChiaBites'],args['PeanutButterBites'],args['OvernightOats'],args['EggCheeseWrap'],args['EggBanconWrap'],args['EggSausageWrap'],args['ChickpeaWrap'],args['BeanBurrito'],args['CoconutWrap'],args['VeggieWrap'])
 
-#class TipsList(Resource):
- #   def get(self):
-    #args = getallTips
+class TipsList(Resource):
+    def get(self):
+        return getAllTips()
 
-#class Tips(Resource):
-    #def get(self, tip_id)
-    #stop if not in database
-    #return Tipcashbox[id]
+class Tips(Resource):
+    def get(self):
+        args = parser.parse_args()
+        return getTipsById(args['tipsId'])
 
 
-#class DepositsList(Resource):
- #   def get(self):
-    #args = getallDeposits
+class DepositsList(Resource):
+    def get(self):
+        return getAllDeposits()
 
-#class Deposits(Resource):
-    #def get(self, tip_id)
-    #stop if not in database
-    #return Depositcashbox[id]
+class Deposits(Resource):
+    def get(self):
+        args = parser.parse_args()
+        return getDepositById(args['depositId'])
 
 #class SafeList(Resource):
  #   def get(self):
     #args = getallSafe
 
 
-#class ReportList(Resource):
- #   def get(self):
-    #args = getallReport
+class ReportList(Resource):
+   def get(self):
+    return getAllReports()
 
-#class Report(Resource):
-    #def get(self, tip_id)
-    #stop if not in database
-    #return Reportcashbox[id]
+class Report(Resource):
+    def get(self, report_id):
+        args = parser.parse_args()
+        return getReportById(report_id)
+    
+    
 
 class Cashboxcall(Resource):
     #get all cashboxes
     def get(self):
         return getAllCashboxes()
-
+    #gets user inputs, stores them in database and returns json format of end report.
     def post(self):
         args = parser.parse_args()
         
@@ -84,6 +87,9 @@ class Cashboxcall(Resource):
         return reportId
 
 api.add_resource(Cashboxcall, '/cash/')
-
+api.add_resource(ReportList,'/report/')
+api.add_resource(DepositsList, '/deposit/')
+api.add_resource(TipsList, '/tips/')
+api.add_resource(Wastesheet, '/wastesheet/')
 if __name__ == '__main__':
     app.run(debug=True)
